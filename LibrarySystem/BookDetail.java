@@ -103,6 +103,31 @@ public class BookDetail {
 		}
 		return b;
 	}
+	
+	
+	public void reportLost(String isbn) {
+		this.isbn = isbn;
+		Connection con = Database.getConnection();
+		String query = "UPDATE BOOK " +
+				       "SET isLost = false" +
+				       "WHERE ISBN = " +isbn;
+		try {
+			// create the prepared statement
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.setString(1, this.isbn);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				System.out.println("Reported book lost.");
+			}
+			con.close();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 
 	private void extractCount() {
 		Connection con = Database.getConnection();
